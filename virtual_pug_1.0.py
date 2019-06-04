@@ -32,14 +32,16 @@ pet = {
     'toy': 0
 }
 
-enemy_names = ['Squirrel', 'Frog', 'Toad']
+# enemy combat removed for now saving for later
 
-enemy = {
-    'hp': 10,
-    'max_hp': 10,
-    'ap': [4, 8],
-    'multiplier': 1
-}
+# enemy_names = ['Squirrel', 'Frog', 'Toad']
+
+#enemy = {
+#    'hp': 10,
+#    'max_hp': 10,
+#    'ap': [4, 8],
+#    'multiplier': 1
+#}
 
 # PET PICTURES
 
