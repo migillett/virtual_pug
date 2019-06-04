@@ -18,7 +18,7 @@ It's a fairly simple game, but beware, there's currently no save function. All p
 
 ## Updates ##
 V1.0
-  5/27/19 - Code uploaded
-  5/31/19 - Readme created
+	5/27/19 - Code uploaded
+	5/31/19 - Readme created
 V1.1
   6/4/19  - Enemy encounters removed and the game should be stable now.
