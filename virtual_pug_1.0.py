@@ -431,9 +431,9 @@ def give_toy():
 # PROGRAM STARTS HERE
 
 print('''
-|-------------------------------------|
-|      Welcome to Pug Simulator!      |
-|-------------------------------------|
+-------------------------------------
+      Welcome to Pug Simulator!
+-------------------------------------
 
  What is your pug's name?''')
 pet['name'] = input(' Name: ')
