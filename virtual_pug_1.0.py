@@ -309,13 +309,6 @@ def bed():
         print(happy, '\n{0} is not tired right now. Maybe take {0} for a walk?\n'.format(pet['name']))
         press_enter()
 
-# ATTACK
-
-def attack():
-    print('\n{0} attacks the {1}'.format(pet['name'], current_enemy))
-    attack_dmg = randint(pet['ap'])
-    enemy['hp'] = enemy['hp'] - attack_dmg
-    print('\n{0} did {1} damage!'.format(attack_point))
 
 # HEAL PET
 
