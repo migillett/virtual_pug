@@ -32,14 +32,16 @@ pet = {
     'toy': 0
 }
 
-enemy_names = ['Squirrel', 'Frog', 'Toad']
+# enemy combat removed for now saving for later
 
-enemy = {
-    'hp': 10,
-    'max_hp': 10,
-    'ap': [4, 8],
-    'multiplier': 1
-}
+# enemy_names = ['Squirrel', 'Frog', 'Toad']
+
+#enemy = {
+#    'hp': 10,
+#    'max_hp': 10,
+#    'ap': [4, 8],
+#    'multiplier': 1
+#}
 
 # PET PICTURES
 
@@ -180,7 +182,7 @@ def accident():
         pee_inside = random.randint(0, 4)
         if pee_inside == 4:
             print(oops, '\nOh no! {0} peed inside! Better clean that up and take {0} outside.'.format(pet['name']))
-            print(' Press enter to clean up the mess.')
+            print('Press enter to clean up the mess.')
             input()
 
 
@@ -231,7 +233,7 @@ XP needed to level up: {8}
     if pet['sick']:
         print('\n{0} has having breathing issues due to {1} weight.'.format(pet['name'], pet['pronoun']))
     elif pet['poop'] or pet['pee']:
-        print(' Looks like {0} might need to go to the bathroom.'.format(pet['name']))
+        print('Looks like {0} might need to go to the bathroom.'.format(pet['name']))
         press_enter()
     else:
         press_enter()
@@ -372,35 +374,10 @@ def walk():
                 walking()
             loot()
             print('\nWould you like to keep walking with {0}?'.format(pet['name']))
-            continue_walking = input('1. Yes\n2. No\n\nInput: ')
-            try:
-                continue_walking = int(continue_walking)
-            except ValueError:
-                error()
-# KEEP WALKING AND ENCOUNTER ENEMIES
+            continue_walking = int(input('1. Yes\n2. No\n\nInput: '))
             if continue_walking == 1:
                 print('\nYou and {0} keep walking.'.format(pet['name']))
                 walking()
-                enemy_appear = random.randint(0, 1)
-                if enemy_appear == 1:
-                    current_enemy = random.choice(enemy_names)
-                    print('\nOh no! A {0} has jumped out in front of {1}!',
-                          'What do you want to do?'.format(current_enemy, pet['name']))
-                    while True:
-                        print(attack_menu.format(current_enemy, pet['name']))
-                        attack_choice = input('Input: ')
-                        try:
-                            attack_choice = int(attack_choice)
-                        except ValueError:
-                            error()
-                        if attack_choice == 1:
-                            print('\n{0} is attacking the {1}'.format(pet['name'], current_enemy))
-                        elif attack_choice == 2:
-                            heal()
-                        elif attack_choice == 3:
-                            print('\nYou and {0} are able to get away and run back home.'.format(pet['name']))
-                            go_home()
-                            break
             elif continue_walking == 2:
                 go_home()
                 break
@@ -437,7 +414,7 @@ def give_toy():
                 press_enter()
                 break
             elif pet['toy'] == 3:
-                print(happy, '{0} seems to really enjoy playing with it.'.format(pet['name'], pet['pronoun']))
+                print(happy, '\n{0} seems to really enjoy playing with it.'.format(pet['name'], pet['pronoun']))
                 press_enter()
                 break
             elif pet['toy'] == 4:
@@ -449,9 +426,9 @@ def give_toy():
 # PROGRAM STARTS HERE
 
 print('''
-|-------------------------------------|
-|      Welcome to Pug Simulator!      |
-|-------------------------------------|
+-------------------------------------
+      Welcome to Pug Simulator!
+-------------------------------------
 
  What is your pug's name?''')
 pet['name'] = input(' Name: ')
