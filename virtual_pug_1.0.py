@@ -1,10 +1,15 @@
+#!/usr/bin/env python3
+
 # This is a program meant to be a fun, digital pet
 # COPYRIGHT MICHAEL GILLETT 2019
 # Compatible with Python 3
 
 import time
 import random
-from random import choice
+import json
+import os
+
+save_game = 'game_save.json'
 
 # CHARACTER DICTIONARIES
 
@@ -129,18 +134,17 @@ Which toy would you like to give your pet?
 
 # ESSENTIAL GAME FUNCTIONS
 
-
 def press_enter():
     input('\nPress enter to continue.')
 
 
 def error():
-    print('\nPlease enter an integer from the menu.')
+    print('\nPlease enter an option from the menu.')
     press_enter()
 
 
 def pet_heal():
-    print(happy, '\nYou give {0} a medkit. {0} is now at full health.'.format(pet['name']))
+    print(happy, '\nYou give {0} a MedKit. {0} is now at full health.'.format(pet['name']))
     pet['hp'] = pet['max_hp']
     press_enter()
 
@@ -318,8 +322,11 @@ def heal():
     if pet['sleep']:
         pet_asleep()
         press_enter()
-    else:
+    if pet['hp'] < pet['max_hp']:
         pet_heal()
+    else:
+        print('{0} is already at full health and does not need a MedKit.')
+        press_enter()
 
 
 # GO HOME
@@ -424,70 +431,99 @@ def give_toy():
 
 
 # PROGRAM STARTS HERE
+def main():
+    global pet
+    # If a save game exists, allow player to load it
+    if os.path.exists(save_game):
+        while True:
+            load_game_select = input('\nWould you like to load a previous save? (Y/N):')
+            try:
+                load_game_select = str(load_game_select.upper())
+            except ValueError:
+                error()
 
-print('''
--------------------------------------
-      Welcome to Pug Simulator!
--------------------------------------
+            if load_game_select == 'Y':
+                with open(save_game, 'r') as save:
+                    print('Save game loaded, welcome back!')
+                    pet = json.load(save)
+                    vitals()
+                break
+            elif load_game_select == 'N':
+                break
+            else:
+                error()
 
- What is your pug's name?''')
-pet['name'] = input(' Name: ')
-while True:
-    print('\nIs your pet male or female?\n1. Male\n2. Female\n')
-    choice = input(' Input: ')
-    try:
-        choice = int(choice)
-    except ValueError:
-        error()
-    if choice == 1:
-        pet['sex'] = 'male'
-        pet['pronoun'] = 'his'
-        break
-    elif choice == 2:
-        pet['sex'] = 'female'
-        pet['pronoun'] = 'her'
-        break
-    else:
-        error()
-while True:
-    accident()
-    fatass()
-    level_up()
-    multiplier()
-    print(main_menu.format(pet['name']))
-    choice = input(' Input: ')
-    try:
-        choice = int(choice)
-    except ValueError:
-        error()
-    # FEED DOG
-    if choice == 1:
-        food()
-    # GIVE DOG WATER
-    elif choice == 2:
-        water()
-    # PUT DOG TO BED
-    elif choice == 3:
-        bed()
-    # CHECK pet_vitals
-    elif choice == 4:
-        vitals()
-    # HEAL DOG
-    elif choice == 5:
-        heal()
-    # TAKE DOG FOR WALK
-    elif choice == 6:
-        walk()
-    # GIVE DOG TOY
-    elif choice == 7:
-        give_toy()
-    # EXIT
-    elif choice == 8:
-        print('\n\nGoodbye\n\n')
-        break
-    # PRINT DICTIONARY FOR DEBUG
-    elif choice == 100:
-        print(pet)
-    # ELSE
-    else:
-        error()
+    if not pet['name']:
+        print('''
+        -------------------------------------
+              Welcome to Pug Simulator!
+        -------------------------------------
+        
+        What is your pug's name?''')
+        pet['name'] = input(' Name: ')
+        while True:
+            print('\nIs your pet male or female?\n1. Male\n2. Female\n')
+            choice = input(' Input: ')
+            try:
+                choice = int(choice)
+            except ValueError:
+                error()
+            if choice == 1:
+                pet['sex'] = 'male'
+                pet['pronoun'] = 'his'
+                break
+            elif choice == 2:
+                pet['sex'] = 'female'
+                pet['pronoun'] = 'her'
+                break
+            else:
+                error()
+
+    while True:
+        accident()
+        fatass()
+        level_up()
+        multiplier()
+        print(main_menu.format(pet['name']))
+        choice = input(' Input: ')
+        try:
+            choice = int(choice)
+        except ValueError:
+            error()
+        # FEED DOG
+        if choice == 1:
+            food()
+        # GIVE DOG WATER
+        elif choice == 2:
+            water()
+        # PUT DOG TO BED
+        elif choice == 3:
+            bed()
+        # CHECK pet_vitals
+        elif choice == 4:
+            vitals()
+        # HEAL DOG
+        elif choice == 5:
+            heal()
+        # TAKE DOG FOR WALK
+        elif choice == 6:
+            walk()
+        # GIVE DOG TOY
+        elif choice == 7:
+            give_toy()
+        # EXIT
+        elif choice == 8:
+            with open(save_game, 'w') as save:
+                json.dump(pet, save)
+            print('\n\nGoodbye\n\n')
+            break
+        # PRINT DICTIONARY FOR DEBUG
+        elif choice == 100:
+            print(pet)
+        # ELSE
+        else:
+            error()
+
+
+if __name__ == '__main__':
+    main()
