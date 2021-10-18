@@ -10,10 +10,9 @@ import json
 import os
 from sys import exit
 
-save_game = 'game_save.json'
+save_game = './savegame.json'
 
 # CHARACTER DICTIONARIES
-
 pet = {
     'name': '',
     'sex': '',
@@ -51,51 +50,86 @@ pet = {
 
 # PET PICTURES
 
-picture = ('\n'
-           ' /\___/\\\n'
-           '\n'
-           '(  O  O )\n'
-           ' (  T  )\n')
-happy = ('\n'
-         ' /\___/\\\n'
-         '\n'
-         '(  ^  ^ )\n'
-         ' (  T  )\n')
-sleep = ('\n'
-         ' /\___/\\\n'
-         '           zZzZzZzZ\n'
-         '(  -  - )\n'
-         ' (  T  )\n')
-confusion = ('\n   ?\n'
-             ' /\___/\\\n'
-             '   _  -    \n'
-             '(  0  0 )\n'
-             ' (  T  )\n')
-ko = ('\n'
-      ' /\___/\\\n'
-      '\n'
-      '(  x  x )\n'
-      ' (  T  )\n')
-angry = ('\n'
-         ' /\___/\\\n'
-         '   \  /\n'
-         '(  O  O )\n'
-         ' (  T  )\n')
-attacking = ('\n'
-             ' /\___/\\\n'
-             '   \  /\n'
-             '(  O  O )\n'
-             ' (  T  )  *bork*\n')
-wow = ('    !\n'
-       ' /\___/\\\n'
-       '   ^  ^\n'
-       '(  O  O )\n'
-       ' (  T  )\n')
-oops = ('\n'
-        ' /\___/\\\n'
-        '   /  \\\n'
-        '(  O  O )\n'
-        ' (  T  )\n')
+picture = '''
+
+ /\___/\\
+
+(  O  O )
+ (  T  )
+
+'''
+
+happy = '''
+
+ /\___/\\
+
+(  ^  ^ )
+ (  T  )
+
+'''
+
+sleep = '''
+
+ /\___/\\
+
+(  -  - )
+ (  T  ) zzzZZZzzzZZZ
+
+'''
+
+confusion = '''
+    ?
+ /\___/\\
+   _  -
+(  O  O )
+ (  T  )
+
+'''
+
+ko = '''
+
+ /\___/\\
+
+(  x  x )
+ (  T  )
+
+'''
+
+angry = '''
+
+ /\___/\\
+   \\ /
+(  O  O )
+ (  T  )
+
+'''
+
+attacking = '''
+
+ /\___/\\
+   \\ /
+(  O  O )
+ (  T  )  *bork*
+
+'''
+
+wow = '''
+    !
+ /\___/\\
+   ^  ^
+(  O  O )
+ (  T  )
+
+'''
+
+oops = '''
+
+ /\___/\\
+   /  \\
+(  O  O )
+ (  T  )
+
+'''
 
 # MENU DICTIONARIES
 
@@ -108,19 +142,8 @@ What would you like to do?
 3. Flee
  ''')
 
-toy_menu = ('''
-------------------------------------------
-Which toy would you like to give your pet?
-------------------------------------------
-1. Dog bone
-2. Tennis ball
-3. Squeaker toy
-4. Return to main menu
- ''')
-
 
 # ESSENTIAL GAME FUNCTIONS
-
 def press_enter():
     input('\nPress enter to continue.')
 
@@ -171,6 +194,7 @@ def pet_ko():
 def accident():
     if not pet['thirst']:
         pee_inside = random.randint(0, 4)
+
         if pee_inside == 4:
             print(oops, f'\nOh no! {pet["name"]} peed inside! Better clean that up and take {pet["name"]} outside.')
             print('Press enter to clean up the mess.')
@@ -181,6 +205,7 @@ def fatass():
     if pet['weight'] < 20 and pet['sick']:
         print(happy, f'\nGood job! {pet["name"]} is back down to a healthy weight and is feeling better.')
         pet['sick'] = False
+
     elif pet['weight'] >= 20:
         print(oops, f'''
 {pet["name"]} has gained some pounds and is starting to have breathing issues.
@@ -188,6 +213,7 @@ Looks like it\'s time for a diet!
 {pet["name"]} won\'t be able to level as quickly anymore.''')
         pet['sick'] = True
         press_enter()
+
     elif pet['weight'] >= 21:
         pet['hp'] -= 5
         pet['sick'] = True
@@ -222,19 +248,21 @@ XP needed to level up: {pet["level_up"]}
 ''')
     if pet['sick']:
         print(f'\n{pet["name"]} has having breathing issues due to {pet["pronoun"]} weight.')
+
     elif pet['poop'] or pet['pee']:
         print(f'Looks like {pet["name"]} might need to go to the bathroom.')
         press_enter()
+        
     else:
         press_enter()
 
 
 # FEED PET
-
 def food():
     if pet['sleep']:
         pet_asleep()
         press_enter()
+
     elif pet['hungry'] < 3:
         pet['hungry'] += 1
         xp_gain = pet['multiplier'] * 2
@@ -246,6 +274,7 @@ def food():
         print(f'''
 {happy}\n{pet["name"]} enjoyed {pet["pronoun"]} meal and earned {xp_gain} XP!''')
         press_enter()
+
     elif pet['hungry'] >= 3:
         print(ko, f'''
  You fed {pet["name"]} too much.
@@ -259,11 +288,11 @@ def food():
 
 
 # GIVE PET WATER
-
 def water():
     if pet['sleep']:
         pet_asleep()
         press_enter()
+
     elif pet['thirst']:
         pet['thirst'] = False
         pet['pee'] = True
@@ -271,13 +300,13 @@ def water():
         pet['xp'] += xp_gain
         print(happy, f'\n{pet["name"]} is no longer thirsty.\n{pet["name"]} earned {xp_gain} XP!')
         press_enter()
+
     elif not pet['thirst']:
         print(angry, f'\n{pet["name"]} is not thirsty right now. Try again later.\n')
         press_enter()
 
 
 # WAKE/SLEEP PET
-
 def bed():
     if pet['sleep']:
         wakeup = random.randint(1, 4)
@@ -292,18 +321,19 @@ def bed():
  Looks like {pet["name"]} is sleeping too hard to wake up right now.
  {pet["name"]} might need some more coercion.''')
             press_enter()
+
     elif not pet['sleep'] and pet['tired']:
         pet['tired'] = False
         pet['sleep'] = True
         print(sleep)
         press_enter()
+
     elif not pet['sleep'] and not pet['tired']:
         print(happy, f'\n{pet["name"]} is not tired right now. Maybe take {pet["name"]} for a walk?\n')
         press_enter()
 
 
 # HEAL PET
-
 def heal():
     if pet['sleep']:
         pet_asleep()
@@ -311,12 +341,11 @@ def heal():
     if pet['hp'] < pet['max_hp']:
         pet_heal()
     else:
-        print('{0} is already at full health and does not need to to go the Veterinarian.')
+        print(f'{pet["name"]} is already at full health and does not need to to go the Veterinarian.')
         press_enter()
 
 
 # GO HOME
-
 def go_home():
     print(f'\nYou and {pet["name"]} made it back home.')
     press_enter()
@@ -326,7 +355,6 @@ def go_home():
 
 
 # LOOT WHILE WALKING
-
 def loot():
     loot_probability = random.randint(0, 9)
     if loot_probability == 1 and pet['multiplier'] < 8:
@@ -344,78 +372,92 @@ def loot():
 
 
 # WALK PET
-
 def walk():
     if pet['sleep']:
         pet_asleep()
         press_enter()
+
     else:
         print(f'\nTaking {pet["name"]} for a walk.')
         press_enter()
-        while True:
-            if pet['pee'] or pet['poop']:
-                walking()
-                print(f'\n{pet["name"]} is stopping to use the bathroom.')
-                press_enter()
-                xp_gain = pet['multiplier'] * 2
-                pet['xp'] += xp_gain
-                print(f'\n{pet["name"]} feels much better now and gained {xp_gain} XP!')
-                pet['pee'] = False
-                pet['poop'] = False
-                walking()
-            else:
-                walking()
+        if pet['pee'] or pet['poop']:
+            walking()
+            print(f'\n{pet["name"]} is stopping to use the bathroom.')
+            press_enter()
+            xp_gain = pet['multiplier'] * 2
+            pet['xp'] += xp_gain
+            print(f'\n{pet["name"]} feels much better now and gained {xp_gain} XP!')
+            pet['pee'] = False
+            pet['poop'] = False
+            walking()
 
+        else:
+            walking()
             loot()
 
-            print(f'\nWould you like to keep walking with {pet["name"]}?')
-            continue_walking = str(input('Yes or no?: ')).lower()
+            while True:
+                print(f'\nWould you like to keep walking with {pet["name"]}?')
+                choice = str(input('Yes or no?: ')).lower()
 
-            if continue_walking in ['yes', 'keep walking', 'keep']:
-                print(f'\nYou and {pet["name"]} keep walking.')
-                walking()
-                
-            elif continue_walking in ['no', 'go home', 'home', 'stop']:
-                go_home()
-                break
-            else:
-                error()
+                if choice in ['y', 'yes', 'continue', 'keep']:
+                    print(f'\nYou and {pet["name"]} keep walking.')
+                    walking()
+                    
+                elif choice in ['n', 'no', 'return', 'home', 'stop']:
+                    go_home()
+                    break
+
+                else:
+                    error()
 
 
 # GIVE PET TOY
-
 def give_toy():
     while True:
         if pet['sleep']:
             pet_asleep()
             press_enter()
             break
+
         elif pet['tired']:
             print(f'\n{pet["name"]} is too tired to play with a toy right now. Maybe later.')
             press_enter()
             break
+
         else:
-            print(toy_menu)
-            pet['toy'] = input(' Input: ')
-            try:
-                pet['toy'] = int(pet['toy'])
-            except ValueError:
-                pass
+            print('''
+------------------------------------------
+Which toy would you like to give your pet?
+------------------------------------------
+ Dog bone
+ Tennis ball
+ Squeaker toy
+
+ Enter "q" to return to the main menu
+ ''')
+            user_input = str(input('Input: ')).lower()
+            choice = user_input.split(' ')
+
             pet['bored'] = False
-            if pet['toy'] == 1:
+
+            if bool(set(choice)&set(['bone'])):
                 print(happy, f'\nYou give {pet["name"]} a dog bone. This should occupy {pet["name"]} for a while.')
                 press_enter()
                 break
-            elif pet['toy'] == 2:
+
+            elif bool(set(choice)&set(['tennis', 'ball'])):
                 print(confusion, f'\n{pet["name"]} doesn\'t seem to understand fetch.')
                 press_enter()
                 break
-            elif pet['toy'] == 3:
-                print(happy, f'\n{pet["name"]} seems to really enjoy playing with it.')
+
+            elif bool(set(choice)&set(['squeaker', 'squeaky'])):
+                print(happy, f'\n{pet["name"]} seems to really enjoy playing with the squeaker toy.')
                 press_enter()
                 break
-            elif pet['toy'] == 4:
+
+            elif bool(set(choice)&set(['q', 'quit', 'return'])):
                 break
+
             else:
                 error()
 
@@ -427,6 +469,7 @@ def main():
     if os.path.exists(save_game):
         while True:
             load_game_select = input('\nWould you like to load a previous save? (Yes/No):')
+
             try:
                 load_game_select = str(load_game_select.lower())
             except ValueError:
@@ -438,8 +481,10 @@ def main():
                     pet = json.load(save)
                     vitals()
                 break
+
             elif load_game_select in ['n', 'no']:
                 break
+
             else:
                 error()
 
@@ -450,10 +495,11 @@ def main():
 -------------------------------------
         
 What is your pug's name?''')
-        pet['name'] = input(' Name: ')
+        pet['name'] = str(input('Name: ')).capitalize()
+
         while True:
             print(f'\nIs {pet["name"]} a boy or a girl?')
-            choice = input(' Input: ')
+            choice = input('Input: ')
 
             try:
                 choice = int(choice)
@@ -493,7 +539,7 @@ What would you like to do?
 8. Exit
  ''')
         print(main_menu)
-        user_input = input(' Input: ')
+        user_input = input('Input: ')
 
         choice = []
         try:
@@ -526,10 +572,7 @@ What would you like to do?
         elif bool(set(choice)&set([8, 'save', 'quit'])):
             with open(save_game, 'w') as save:
                 json.dump(pet, save)
-            exit('\n\nGoodbye\n\n')
-        # PRINT DICTIONARY FOR DEBUG
-        elif choice == 100:
-            print(pet)
+            exit('\nGoodbye\n')
         # ELSE
         else:
             error()

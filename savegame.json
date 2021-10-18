@@ -1,0 +1,1 @@
+{"name": "Roper", "sex": "male", "pronoun": "his", "hungry": 0, "thirst": true, "weight": 18.5, "tired": false, "sleep": false, "lvl": 1, "hp": 10, "max_hp": 10, "age": 8, "xp": 0, "multiplier": 4, "level_up": 10, "sick": false, "ap": [5, 10], "poop": false, "pee": false, "bored": true, "toy": 0}
