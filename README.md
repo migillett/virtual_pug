@@ -14,16 +14,11 @@ It's a fairly simple game.
 3. GUI? Maybe?
 
 ## Updates ##
-V1.0
 
 2019/05/19 - Code uploaded
 
 2019/05/31 - Readme created
 
-V1.1
-
 2019/06/04 - Enemy encounters removed and the game should be stable now.
-
-V1.2
 
 2021/10/17 - Quality of life update: changed menu system and program organization.
