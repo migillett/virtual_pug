@@ -22,3 +22,5 @@ It's a fairly simple game.
 2019/06/04 - Enemy encounters removed and the game should be stable now.
 
 2021/10/17 - Quality of life update: changed menu system and program organization.
+
+### In memory of Roper. 2009-2022

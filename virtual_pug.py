@@ -5,12 +5,12 @@
 # Compatible with Python 3
 
 import json
-import os
+from os import path
 from sys import exit
 
 from assets.functions import *
 
-save_game = './savegame.json'
+save_game = path.join(path.dirname(__file__), 'savegame.json')
 
 # CHARACTER DICTIONARIES
 pet = {
@@ -42,7 +42,7 @@ pet = {
 def main():
     global pet
     # If a save game exists, allow player to load it
-    if os.path.exists(save_game):
+    if path.exists(save_game):
         while True:
             load_game_select = input('\nWould you like to load a previous save? (Yes/No):')
 
@@ -74,7 +74,7 @@ What is your pug's name?''')
         pet['name'] = str(input('Name: ')).capitalize()
 
         while True:
-            print(f'\nIs {pet["name"]} a boy or a girl?')
+            print(f'\nIs {pet["name"]} a male or a female?')
             choice = input('Input: ')
 
             try:

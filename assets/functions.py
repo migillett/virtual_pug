@@ -239,6 +239,7 @@ def walk(pet):
     else:
         print(f'\nTaking {pet["name"]} for a walk.')
         press_enter()
+        
         if pet['pee'] or pet['poop']:
             walking(pet)
             print(f'\n{pet["name"]} is stopping to use the bathroom.')
